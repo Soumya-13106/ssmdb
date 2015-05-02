@@ -77,9 +77,32 @@
 			?>
 		</form>
 		</div>
-		<div id="center">
 
+
+		<div id="center1">
 		</div>
+
+		<div id="middle">
+		<form action='#' method="POST">
+		  <div class='field'>
+		    <input placeholder="Select Query" name="selectQuery">
+		    <label>Query Chosen</label>
+		    <select name="cars">
+				<option value="volvo">Volvo</option>
+				<option value="saab">Saab</option>
+				<option value="fiat" selected>Fiat</option>
+				<option value="audi">Audi</option>
+			</select>
+		  </div>
+		  <div class='field form-actions'>
+		    <button type='submit'>Execute</button>
+		  </div>
+		</form>
+		</div>
+
+		<div id="center2">
+		</div>
+
 		<div id="right">
 			<div id="selectDB">
 			<form method="POST" action="#">
@@ -131,7 +154,7 @@
 
 	<?php
 	//echo "Yay";
-	$result = $mysqli->query("SELECT * from actor");
+	/*$result = $mysqli->query("SELECT * from actor");
 	if (!$result) {
 		echo 'Could not run query: ' . mysql_error();
 		exit;
@@ -155,7 +178,7 @@
 	}
 	echo "</table>";
 
-	$mysqli->close()
+	$mysqli->close()*/
 ?>
 
 </body>
