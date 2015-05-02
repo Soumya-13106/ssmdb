@@ -1,14 +1,26 @@
 <html>
+<head>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="modal-position.js"></script>
+</head>
 <body>
-	<?php
-	// your config
+
+	<div id="modal">
+		<div id="left">
+
+		</div>
+		<div id="center">
+
+		</div>
+		<div id="right">
+
+		</div>
+	</div>
 	
-	function connect($host, $user, $pass) {
-		$this->dbcnt = mysqli_connect($host, $user, $pass) or
-		die("unable to connect to server");
-	}
 
-
+	<?php
+	/*// your config
+	
 	global $conn;
 	$dbHost = '127.0.0.1';
 	$dbUser = 'root';
@@ -30,7 +42,7 @@
 	}
 
 	//echo "Yay";
-	$result = $mysqli->query("SELECT * from movies ORDER BY mid");
+	$result = $mysqli->query("SELECT * from movies, actor, acts_in where acts_in.aid = actor.aid and movies.mid = acts_in.mid");
 	if (!$result) {
 	    echo 'Could not run query: ' . mysql_error();
 	    exit;
@@ -55,6 +67,6 @@
 	echo "</table>";
 
 	//$conn->close()
-?>
+*/?>
 </body>
 </html>

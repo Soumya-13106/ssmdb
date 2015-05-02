@@ -1,0 +1,51 @@
+html, body {
+	margin: 0;
+	padding: 0;
+}
+
+#modal {
+	background-color: #A3CC52;
+	width: 75%;
+	height: 65%;
+	display: block;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	position: absolute;
+	margin: auto;
+	box-shadow: 8px 8px 5px #888888;
+	-moz-box-shadow: 8px 8px 5px #888888;
+	-webkit-box-shadow: 8px 8px 5px #888888;
+}
+
+#left {
+	position: relative;
+	height: 100%;
+	width: 49%;
+	left: 0;
+	top: 0;
+	background-color: #888888;
+	float: left;
+	opacity: 0.5;
+}
+
+#center {
+	position: relative;
+	height: 80%;
+	width: 0.5%;
+	margin-top: 3%;
+	background-color: #746372;
+	float:left;
+	opacity: 0.5;
+}
+
+#right {
+	position: relative;
+	height: 100%;
+	width: 49%;
+	top: 0;
+	background-color: #3a3b3e;
+	float: left;
+	opacity: 0.5;
+}
