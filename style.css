@@ -196,6 +196,9 @@ input[type="submit"]:focus::after, input[type="submit"]:focus::before, button:fo
 	float: left;
 	opacity: 100;
 	opacity: 1;
+	padding-left: 35;
+	padding-top: 45;
+
 }
 
 #selectDB,#executeQuery {
