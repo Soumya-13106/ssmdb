@@ -1,10 +1,19 @@
 <html>
 <head>
 	<link rel="stylesheet" type="text/css" href="style.css">
-	<script src="modal-position.js"></script>
+	<script type="text/javascript">
+		$('#selectDBTag').change(function() {
+   		var parent = $(this).val();
+   		
+   		$('#payment_plan').children().each(function() {
+      		if($(this).data('parent') != parent) {
+                $(this).hide();
+   			} else    $(this).show();
+   		});
+	});
+	</script>-->
 </head>
 <body>
-
 	<div id="modal">
 		<div id="left">
 		<form action='#'>
@@ -53,8 +62,42 @@
 	    exit;
 	}
 
+?>
+	<div id="modal">
+		<div id="left">
+
+		</div>
+		<div id="center">
+
+		</div>
+		<div id="right">
+			<button type="button" id="addEntry" onclick="document.getElementById('selectDB').style.display='block';document.getElementById('executeQuery').style.display='block';">Add</button>
+			<button type="button" id="updateEntry" onclick="document.getElementById('selectDB').style.display='block';document.getElementById('executeQuery').style.display='block';">Update</button>
+			<button type="button" id="deleteEntry" onclick="document.getElementById('selectDB').style.display='block';document.getElementById('executeQuery').style.display='block';">Delete</button>
+			<div id="selectDB">
+				<?php
+				$res = $mysqli->query("SHOW TABLES");
+  				echo "<select name='selectDBTag' id='selectDBTag'>";
+  				while($cRow = mysqli_fetch_array($res)) {
+    				echo "<option value=" . $cRow[0] . ">" . $cRow[0] ."</option>";
+				}
+				echo "</select>"
+
+
+
+				?>
+
+			</div>
+			<button type="button" id="executeQuery" onclick="document.getElementById('selectDB').style.display='block';">Execute</button>
+		</div>
+	</div>
+	
+
+
+
+	<?php
 	//echo "Yay";
-	$result = $mysqli->query("SELECT * from movies, actor, acts_in where acts_in.aid = actor.aid and movies.mid = acts_in.mid");
+	$result = $mysqli->query("SELECT * from actor");
 	if (!$result) {
 	    echo 'Could not run query: ' . mysql_error();
 	    exit;
@@ -78,7 +121,7 @@
 	}
 	echo "</table>";
 
-	//$conn->close()
-*/?>
+	$mysqli->close()
+?>
 </body>
 </html>

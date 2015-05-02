@@ -186,5 +186,10 @@ input[type="submit"]:focus::after, input[type="submit"]:focus::before, button:fo
 	top: 0;
 	background-color: #ffffff;
 	float: left;
-	opacity: 100
+	opacity: 100;
+	opacity: 0.5;
+}
+
+#selectDB,#executeQuery {
+	display: none;
 }
