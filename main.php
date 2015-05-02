@@ -40,9 +40,9 @@
 ?>
 	<div id="modal">
 		<div id="left">
-		<form action='#'>
+		<form action='#' method="POST">
 		  <div class='field'>
-		    <input placeholder='Query'>
+		    <input placeholder="Query" name="query">
 		    <label>Your Query</label>
 		  </div>
 		  <div class='field form-actions'>
@@ -50,6 +50,29 @@
 		  </div>
 
 		  <?php
+		  	$result = $mysqli->query($_POST["query"]);
+	if (!$result) {
+	    echo 'Could not run query: ' . mysql_error();
+	    exit;
+	}
+
+	echo "<table>";
+	$finfo = $result->fetch_fields();
+	echo "<tr>";
+	foreach ($finfo as $val) {
+		echo "<td>" . $val->name . "</td>";
+	}
+	echo "</tr>";
+
+	while($row = $result->fetch_array()) {
+    	$finfo = $result->fetch_fields();
+		echo "<tr>";
+		foreach ($finfo as $val) {
+			echo "<td>" . $row[$val->name] . "</td>";
+		}
+		echo "</tr>";
+	}
+	echo "</table>";
 
 		  ?>
 		</form>
@@ -110,5 +133,6 @@
 
 	$mysqli->close()
 ?>
+
 </body>
 </html>
