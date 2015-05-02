@@ -49,6 +49,7 @@
 			<button type='submit' name='customQuery'>Execute</button>
 			</div>
 
+			<div class = "answer">
 			<?php
 			if(isset($_POST["customQuery"])){
 				$result = $mysqli->query($_POST["query"]);
@@ -57,24 +58,31 @@
 					exit;
 				}
 
-				echo "<table>";
-				$finfo = $result->fetch_fields();
-				echo "<tr>";
-				foreach ($finfo as $val) {
-					echo "<td>" . $val->name . "</td>";
-				}
-				echo "</tr>";
-				while($row = $result->fetch_array()) {
+				if(mysqli_num_rows($result) > 0){
+					echo "<table>";
 					$finfo = $result->fetch_fields();
 					echo "<tr>";
 					foreach ($finfo as $val) {
-						echo "<td>" . $row[$val->name] . "</td>";
+						echo "<td>" . $val->name . "</td>";
 					}
 					echo "</tr>";
+					while($row = $result->fetch_array()) {
+						$finfo = $result->fetch_fields();
+						echo "<tr>";
+						foreach ($finfo as $val) {
+							echo "<td>" . $row[$val->name] . "</td>";
+						}
+						echo "</tr>";
+					}
+					echo "</table>";
 				}
-				echo "</table>";
+				else{
+					echo "Query executed succesfully! No rows returned";
+				}
+
 			}
 			?>
+		</div>	
 		</form>
 		</div>
 
@@ -93,7 +101,7 @@
 			</select>
 		  </div>
 		  <div class='field form-actions'>
-		    <button type='submit' name='dropExecute'>Execute</button>
+		    <button type='submit' name='dropExecute' style="margin-top: 15px;">Execute</button>
 		  </div>
 
 			<?php

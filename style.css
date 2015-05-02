@@ -53,6 +53,74 @@ html {
   background-color: #F3F3F3;
 }
 
+
+#center1 {
+	position: relative;
+	height: 88%;
+	width: 0.5%;
+	margin-top: 3%;
+	background-color: #2AB0C5;
+	float:left;
+	opacity: 1;
+}
+
+#middle {
+	position: relative;
+	height: 100%;
+	width: 33%;
+	left: 0;
+	top: 0;
+	background-color: #ffffff;
+	float: left;
+	opacity: 100;
+	padding-top: 50;
+  	padding-left: 30;
+  	padding-right: 30;
+}
+
+#center2 {
+	position: relative;
+	height: 88%;
+	width: 0.5%;
+	margin-top: 3%;
+	background-color: #2AB0C5;
+	float:left;
+	opacity: 1;
+}
+
+#right {
+	position: relative;
+	height: 100%;
+	width: 33%;
+	top: 0;
+	background-color: #ffffff;
+	float: left;
+	opacity: 100;
+	opacity: 1;
+	padding-left: 35;
+	padding-top: 45;
+
+}
+
+#answer {
+	overflow: scroll;
+}
+
+#answer table {
+	width: auto;
+}
+
+.attributeTextField {
+  padding: 10px;
+  height: 30px;
+  width: 100%;
+  margin: 10px;
+}
+
+#addQueryDiv{
+  display: none;
+}
+
 body {
   max-width: 20em;
   margin: 3em auto;
@@ -167,64 +235,4 @@ input[type="submit"]:focus, button:focus {
 }
 input[type="submit"]:focus::after, input[type="submit"]:focus::before, button:focus::after, button:focus::before {
   opacity: 1;
-}
-
-
-#center1 {
-	position: relative;
-	height: 88%;
-	width: 0.5%;
-	margin-top: 3%;
-	background-color: #2AB0C5;
-	float:left;
-	opacity: 1;
-}
-
-#middle {
-	position: relative;
-	height: 100%;
-	width: 33%;
-	left: 0;
-	top: 0;
-	background-color: #ffffff;
-	float: left;
-	opacity: 100;
-	padding-top: 50;
-  	padding-left: 30;
-  	padding-right: 30;
-}
-
-#center2 {
-	position: relative;
-	height: 88%;
-	width: 0.5%;
-	margin-top: 3%;
-	background-color: #2AB0C5;
-	float:left;
-	opacity: 1;
-}
-
-#right {
-	position: relative;
-	height: 100%;
-	width: 33%;
-	top: 0;
-	background-color: #ffffff;
-	float: left;
-	opacity: 100;
-	opacity: 1;
-	padding-left: 35;
-	padding-top: 45;
-
-}
-
-.attributeTextField {
-  padding: 10px;
-  height: 30px;
-  width: 100%;
-  margin: 10px;
-}
-
-#addQueryDiv{
-  display: none;
 }
