@@ -83,20 +83,47 @@
 		</div>
 
 		<div id="middle">
-		<form action='#' method="POST">
-		  <div class='field'>
-		    <input placeholder="Select Query" name="selectQuery">
-		    <label>Query Chosen</label>
-		    <select name="cars">
-				<option value="volvo">Volvo</option>
-				<option value="saab">Saab</option>
-				<option value="fiat" selected>Fiat</option>
-				<option value="audi">Audi</option>
+			<div class='dropQueries'>
+			<form action='#' method="POST">
+		    <select name="queries" style="margin-right: 20px;width:100%;">
+				<option value="SELECT * FROM actor GROUP BY name">SELECT * FROM actor GROUP BY name</option>
+				<option value="SELECT * FROM movies WHERE title LIKE '%Princess%'">SELECT * FROM movies WHERE title LIKE "%Princess%"</option>
+				<option value="SELECT * FROM actor, director WHERE actor.dob = director.dob">SELECT * FROM actor, director WHERE actor.dob = director.dob</option>
+				<option value="select * FROM director, movies WHERE director.did = 32">select * FROM director, movies WHERE director.did = 32</option>
 			</select>
 		  </div>
 		  <div class='field form-actions'>
-		    <button type='submit'>Execute</button>
+		    <button type='submit' name='dropExecute'>Execute</button>
 		  </div>
+
+			<?php
+			if(isset($_POST["dropExecute"])){
+				$result = $mysqli->query($_POST["queries"]);
+				if (!$result) {
+					echo 'Could not run query: ' . mysql_error();
+					exit;
+				}
+
+				echo "<table>";
+				$finfo = $result->fetch_fields();
+				echo "<tr>";
+				foreach ($finfo as $val) {
+					echo "<td>" . $val->name . "</td>";
+				}
+				echo "</tr>";
+				while($row = $result->fetch_array()) {
+					$finfo = $result->fetch_fields();
+					echo "<tr>";
+					foreach ($finfo as $val) {
+						echo "<td>" . $row[$val->name] . "</td>";
+					}
+					echo "</tr>";
+				}
+				echo "</table>";
+			}
+
+			?>
+
 		</form>
 		</div>
 
