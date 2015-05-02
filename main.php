@@ -157,13 +157,13 @@
 			<form name='selectQueryForm' action='#' method='POST'>	
 			<?php
 			//echo $_POST['addEntry'];
+			
 			if(isset($_POST['addEntry'])) {
 				$result = $mysqli->query("SELECT * from " . $_POST['selectDBTag']);
 				if (!$result) {
-					echo 'Could not run query: ' . mysql_error();
+					echo 'Could not run query: ' . $mysqli->error();
 					exit;
 				}
-				echo "<input type='hidden' value='" .$_POST['selectDBTag'] ."' name='databaseNameSelected'/>Hello";
 				$finfo = $result->fetch_fields();
 				foreach ($finfo as $val) {
 					echo "<input class='attributeTextField' type='";
@@ -176,47 +176,149 @@
 					}
 					echo "' placeholder='" . $val->name . "' name='" . $val->name . "'>";
 				}
+				echo "<input type='hidden' value='" .$_POST['selectDBTag'] ."' name='databaseNameSelected'/>";
+				echo "<input type='hidden' value='add' name='queryType'/>";
+			}
+			
+			if(isset($_POST['updateEntry']) || isset($_POST['deleteEntry'])) {
+				$result = $mysqli->query("SELECT * from " .$_POST['selectDBTag']);
+				if(!$result) {
+					echo 'Could not run query: ' . $mysqli->error();
+					exit();
+				}
+
+				echo "</table>";
+				
+				while($row = $result->fetch_array()) {
+					$finfo = $result->fetch_fields();
+					$str = "<input type='radio' name='updateRB' class='updateRadioButton' value='";
+					$tupleValues = "";
+					$tupleHeaders = "";
+					//echo "<input type='radio' name='updateRB' class='updateRadioButton' value='";
+					//$flag=0;
+
+					foreach ($finfo as $val) {
+						/*if($val->flags=="49667") {
+							$str .= "Bleh!".$row[$val->name];
+						} else {
+							$str .= "'>" .$row[$val->name];
+						}*/
+						$str .= $row[$val->name] .", ";
+						$tupleValues .= $row[$val->name];
+					}
+					$str = rtrim($str, ", ");
+					$str .= "'>";
+					echo $str .$tupleValues ."<br>";
+				}
+				echo "<input type='hidden' value='" .$_POST['selectDBTag'] ."' name='databaseNameSelected'/>";
+				if(isset($_POST['updateEntry'])){
+					echo "<input type='hidden' value='update' name='queryType'/>";
+				} elseif(isset($_POST['deleteEntry'])){
+					echo "<input type='hidden' value='delete' name='queryType'/>";
+				}
 			}
 			?>
 			
-			<button type="submit" name="executeAddQuery">Execute</button>
+			<button type="submit" name="execute">Execute</button>
 			</form>
-
 			<?php
 
 			/*print("<pre>");
 			print_r($_POST);
 			print("</pre>");
 			*/
-			if(isset($_POST['executeAddQuery'])) {
-				$str = "INSERT INTO " .$_POST['databaseNameSelected'] . " (";
-				$result1 = $mysqli->query("SELECT * from " .$_POST['databaseNameSelected']);
-				if (!$result1) {
-					echo 'Could not run query: ' . mysql_error();
-					exit;
-				}
+			if(isset($_POST['execute'])) {
+				if($_POST['queryType']=="add") {
+					$str = "INSERT INTO " .$_POST['databaseNameSelected'] . " (";
+					$result1 = $mysqli->query("SELECT * from " .$_POST['databaseNameSelected']);
+					if (!$result1) {
+						echo 'Could not run query: ' . $mysqli->error();
+						exit;
+					}
 
-				$finfo = $result1->fetch_fields();
-				foreach ($finfo as $val) {
-					$str.= " " .$val->name . ",";
+					$finfo = $result1->fetch_fields();
+					foreach ($finfo as $val) {
+						$str.= " " .$val->name . ",";
+					}
+					$str = rtrim($str, ",");
+					$str .= ") VALUES (";
+					foreach ($finfo as $val) {
+						$str.= " " ."'" .$_POST[$val->name] ."'" . ",";
+					}
+					$str = rtrim($str, ",");
+					$str .= ")";
+					
+					echo "SQL Query becomes: " .$str;
+					$result = $mysqli->query($str);
+					if (!$result) {
+						echo 'Could not run query: ' . $mysqli->error();
+						exit;
+					} else {
+						echo "Query inserted";
+					}
+				} elseif($_POST['queryType']=="update") {
+					print("<pre>");
+					print_r($_POST);
+					print("</pre>");
+					$exploded = (explode(", ",$_POST['updateRB']));
+					$result1 = $mysqli->query("SELECT * FROM " .$_POST['databaseNameSelected']);
+					if(!$result1) {
+						echo "Could not run query: " .$mysqli->error();
+						exit();
+					}
+					$finfo = $result1->fetch_fields();
+					/*foreach ($finfo as $val) {
+						echo $val->name;
+					}*/
+					$i=0;
+					$queryString = "SELECT * FROM " .$_POST['databaseNameSelected'] . " WHERE ";
+					foreach ($finfo as $val) {
+						$queryString .= $val->name . "='" .$exploded[$i] ."' and ";
+						$i += 1;
+					}
+					$queryString = rtrim($queryString, ' and ');
+					$queryString .= ";";
+					echo "SQL query is: ";
+					echo $queryString;
+					$result = $mysqli->query($queryString);
+					if (!$result) {
+						echo "Could not run query: " . $mysqli->error();
+						exit;
+					} else {
+						echo "Make changes";
+					}
+				} elseif($_POST['queryType']=="delete") {
+					print("<pre>");
+					print_r($_POST);
+					print("</pre>");
+					$exploded = (explode(", ",$_POST['updateRB']));
+					$result1 = $mysqli->query("SELECT * FROM " .$_POST['databaseNameSelected']);
+					if(!$result1) {
+						echo "Could not run query: " .$mysqli->error();
+						exit();
+					}
+					$finfo = $result1->fetch_fields();
+					/*foreach ($finfo as $val) {
+						echo $val->name;
+					}*/
+					$i=0;
+					$queryString = "DELETE FROM " .$_POST['databaseNameSelected'] . " WHERE ";
+					foreach ($finfo as $val) {
+						$queryString .= $val->name . "='" .$exploded[$i] ."' and ";
+						$i += 1;
+					}
+					$queryString = rtrim($queryString, ' and ');
+					$queryString .= ";";
+					echo "SQL query is: ";
+					echo $queryString;
+					$result = $mysqli->query($queryString);
+					if (!$result) {
+						echo "Could not run query: " . $mysqli->error();
+						exit;
+					} else {
+						echo "Tuple Deleted";
+					}
 				}
-				$str = rtrim($str, ",");
-				$str .= ") VALUES (";
-				foreach ($finfo as $val) {
-					$str.= " " ."'" .$_POST[$val->name] ."'" . ",";
-				}
-				$str = rtrim($str, ",");
-				$str .= ")";
-				
-				echo "SQL Query becomes: " .$str;
-				$result = $mysqli->query($str);
-				if (!$result) {
-					echo 'Could not run query: ' . mysql_error();
-					exit;
-				} else {
-					echo "Query inserted";
-				}
-
 
 			}
 			?>
@@ -230,7 +332,7 @@
 	//echo "Yay";
 	/*$result = $mysqli->query("SELECT * from actor, movies");
 	if (!$result) {
-		echo 'Could not run query: ' . mysql_error();
+		echo 'Could not run query: ' . $mysqli->error();
 		exit;
 	}
 
