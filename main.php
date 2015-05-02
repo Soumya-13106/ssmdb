@@ -114,12 +114,12 @@
 				}
 				echo "</select>"
 				?>
-			<button type="submit" name="addEntry" id="addEntryID" onclick="document.getElementById('selectDB').style.display='block';document.getElementById('executeQuery').style.display='block';">Add</button>
+			<button type="submit" name="addEntry" id="addEntryID">Add</button>
 			<button type="submit" name="updateEntry" id="updateEntryID" onclick="document.getElementById('selectDB').style.display='block';document.getElementById('executeQuery').style.display='block';">Update</button>
 			<button type="submit" name="deleteEntry" id="deleteEntryID" onclick="document.getElementById('selectDB').style.display='block';document.getElementById('executeQuery').style.display='block';">Delete</button>
 			</form>
 			</div>
-			<form name='selectQueryForm' action='#' method='POST'>				
+			<form name='selectQueryForm' action='#' method='POST'>	
 			<?php
 			//echo $_POST['addEntry'];
 			if(isset($_POST['addEntry'])) {
@@ -128,25 +128,64 @@
 					echo 'Could not run query: ' . mysql_error();
 					exit;
 				}
-
+				echo "<input type='hidden' value='" .$_POST['selectDBTag'] ."' name='databaseNameSelected'/>Hello";
 				$finfo = $result->fetch_fields();
 				foreach ($finfo as $val) {
-					echo "<input class='attributeTextField' type='text' placeholder=" . $val->name . " name=" . $val->name . "</input>";
-				}
-				echo "<table>";
-				while($row = $result->fetch_array()) {
-					$finfo = $result->fetch_fields();
-					echo "<tr>";
-					foreach ($finfo as $val) {
-						echo "<td>" . $row[$val->name] . "</td>";
+					echo "<input class='attributeTextField' type='";
+					if($val->type===10) {
+						echo "date";
+					} elseif ($val->type===11) {
+						echo "time";
+					} else {
+						echo "text";
 					}
-					echo "</tr>";
+					echo "' placeholder='" . $val->name . "' name='" . $val->name . "'>";
 				}
-				echo "</table>";
+			}
+			?>
+			
+			<button type="submit" name="executeAddQuery">Execute</button>
+			</form>
+
+			<?php
+
+			/*print("<pre>");
+			print_r($_POST);
+			print("</pre>");
+			*/
+			if(isset($_POST['executeAddQuery'])) {
+				$str = "INSERT INTO " .$_POST['databaseNameSelected'] . " (";
+				$result1 = $mysqli->query("SELECT * from " .$_POST['databaseNameSelected']);
+				if (!$result1) {
+					echo 'Could not run query: ' . mysql_error();
+					exit;
+				}
+
+				$finfo = $result1->fetch_fields();
+				foreach ($finfo as $val) {
+					$str.= " " .$val->name . ",";
+				}
+				$str = rtrim($str, ",");
+				$str .= ") VALUES (";
+				foreach ($finfo as $val) {
+					$str.= " " ."'" .$_POST[$val->name] ."'" . ",";
+				}
+				$str = rtrim($str, ",");
+				$str .= ")";
+				
+				echo "SQL Query becomes: " .$str;
+				$result = $mysqli->query($str);
+				if (!$result) {
+					echo 'Could not run query: ' . mysql_error();
+					exit;
+				} else {
+					echo "Query inserted";
+				}
+
 
 			}
 			?>
-			</form>
+			</div>
 			</div>
 	
 
@@ -154,7 +193,7 @@
 
 	<?php
 	//echo "Yay";
-	/*$result = $mysqli->query("SELECT * from actor");
+	/*$result = $mysqli->query("SELECT * from actor, movies");
 	if (!$result) {
 		echo 'Could not run query: ' . mysql_error();
 		exit;
