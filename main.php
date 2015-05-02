@@ -7,7 +7,19 @@
 
 	<div id="modal">
 		<div id="left">
+		<form action='#'>
+		  <div class='field'>
+		    <input placeholder='Query'>
+		    <label>Your Query</label>
+		  </div>
+		  <div class='field form-actions'>
+		    <button type='submit'>Execute</button>
+		  </div>
 
+		  <?php
+
+		  ?>
+		</form>
 		</div>
 		<div id="center">
 
@@ -19,7 +31,7 @@
 	
 
 	<?php
-	/*// your config
+	// your config
 	
 	global $conn;
 	$dbHost = '127.0.0.1';
