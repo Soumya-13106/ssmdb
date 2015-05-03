@@ -54,7 +54,7 @@
 			if(isset($_POST["customQuery"])){
 				$result = $mysqli->query($_POST["query"]);
 				if (!$result) {
-					echo 'Could not run query: ' . mysql_error();
+					echo 'Could not run query: ' . $mysqli->error();
 					exit;
 				}
 
@@ -152,6 +152,7 @@
 			<button type="submit" name="addEntry" id="addEntryID">Add</button>
 			<button type="submit" name="updateEntry" id="updateEntryID" onclick="document.getElementById('selectDB').style.display='block';document.getElementById('executeQuery').style.display='block';">Update</button>
 			<button type="submit" name="deleteEntry" id="deleteEntryID" onclick="document.getElementById('selectDB').style.display='block';document.getElementById('executeQuery').style.display='block';">Delete</button>
+			<button type="submit" name="searchEntry" id="searchEntryID" onclick="document.getElementById('selectDB').style.display='block';document.getElementById('executeQuery').style.display='block';">Search</button>
 			</form>
 			</div>
 			<form name='selectQueryForm' action='#' method='POST'>	
@@ -187,8 +188,6 @@
 					exit();
 				}
 
-				echo "</table>";
-				
 				while($row = $result->fetch_array()) {
 					$finfo = $result->fetch_fields();
 					$str = "<input type='radio' name='updateRB' class='updateRadioButton' value='";
@@ -217,6 +216,46 @@
 					echo "<input type='hidden' value='delete' name='queryType'/>";
 				}
 			}
+			if(isset($_POST['searchEntry'])) {
+				$result = $mysqli->query("SELECT * from " . $_POST['selectDBTag']);
+				if (!$result) {
+					echo 'Could not run query: ' . $mysqli->error();
+					exit;
+				}
+				/*$finfo = $result->fetch_fields();
+				foreach ($finfo as $val) {
+					echo "<input class='attributeTextField' type='";
+					if($val->type===10) {
+						echo "date";
+					} elseif ($val->type===11) {
+						echo "time";
+					} else {
+						echo "text";
+					}
+					echo "' placeholder='" . $val->name . "' name='" . $val->name . "'>";
+				}*/
+				$finfo = $result->fetch_fields();
+				foreach ($finfo as $val) {
+					echo "<select name='" .$val->name ."Query'>";
+					echo "<option value='" . $val->name . "'>" .$val->name ."</option>";
+					$query1 = "SELECT DISTINCT " .$val->name ." from " . $_POST['selectDBTag'];
+					$result = $mysqli->query($query1);
+					while($row = $result->fetch_array()) {
+						echo "<option value='" . $row[$val->name] . "'>" .$row[$val->name] ."</option>";
+						/*$finfo1 = $result->fetch_fields();
+						foreach ($finfo1 as $val1) {*/
+						/*	if($val==$val1){
+								echo "<option value='" . $row[$val1->name] . "'>" .$row[$val1->name] ."</option>";
+							}
+						*/
+					}
+					echo "</select>";
+				}
+				
+				echo "<input type='hidden' value='" .$_POST['selectDBTag'] ."' name='databaseNameSelected'/>";
+				echo "<input type='hidden' value='search' name='queryType'/>";
+			}
+
 			?>
 			
 			<button type="submit" name="execute">Execute</button>
@@ -256,6 +295,52 @@
 					} else {
 						echo "Query inserted";
 					}
+				} elseif($_POST['queryType']=="search") {
+					$str = "SELECT * FROM " .$_POST['databaseNameSelected'] . " WHERE ";
+					$result1 = $mysqli->query("SELECT * from " .$_POST['databaseNameSelected']);
+					if (!$result1) {
+						echo 'Could not run query: ' . $mysqli->error();
+						exit;
+					}
+					print("<pre>");
+					print_r($_POST);
+					print("</pre>");
+					
+					$finfo = $result1->fetch_fields();
+					foreach ($finfo as $val) {
+						$str1 = $val->name . "Query";
+						if($_POST[$str1]!=$val->name)
+							$str .= $val->name ."=" ."'" .$_POST[$str1] ."' and ";
+					}
+					$str = rtrim($str, " and ");
+					$str .= ";";
+					
+					echo "SQL Query becomes: " .$str;
+					$result = $mysqli->query($str);
+					if (!$result) {
+						echo 'Could not run query: ' . $mysqli->error();
+						exit;
+					} else {
+						echo "Query selected";
+					}
+					$finfo = $result->fetch_fields();
+					echo "<table>";
+					$finfo = $result->fetch_fields();
+					echo "<tr>";
+					foreach ($finfo as $val) {
+						echo "<td>" . $val->name . "</td>";
+					}
+					echo "</tr>";
+
+					while($row = $result->fetch_array()) {
+						$finfo = $result->fetch_fields();
+						echo "<tr>";
+						foreach ($finfo as $val) {
+							echo "<td>" . $row[$val->name] . "</td>";
+						}
+						echo "</tr>";
+					}
+					echo "</table>";
 				} elseif($_POST['queryType']=="update") {
 					print("<pre>");
 					print_r($_POST);
