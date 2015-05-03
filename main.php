@@ -98,7 +98,7 @@
 				<option value="SELECT * FROM actor GROUP BY name">SELECT * FROM actor GROUP BY name</option>
 				<option value="SELECT * FROM movies WHERE title LIKE '%Princess%'">SELECT * FROM movies WHERE title LIKE "%Princess%"</option>
 				<option value="SELECT * FROM actor, director WHERE actor.dob = director.dob">SELECT * FROM actor, director WHERE actor.dob = director.dob</option>
-				<option value="select * FROM director, movies WHERE director.did = 32">select * FROM director, movies WHERE director.did = 32</option>
+				<option value="SELECT * FROM director, movies WHERE director.did = 32">select * FROM director, movies WHERE director.did = 32</option>
 			</select>
 		  </div>
 		  <div class='field form-actions'>
