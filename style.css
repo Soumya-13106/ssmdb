@@ -103,7 +103,11 @@ html {
 }
 
 #answer {
-	overflow: scroll;
+	position: relative;
+	height: 100%;
+	width: 85%;
+	background-color: f3f3f3;
+	overflow: auto;
 }
 
 #answer table {
