@@ -46,11 +46,12 @@
 			<label>Your Query</label>
 			</div>
 			<div class='field form-actions'>
-			<button type='submit' name='customQuery'>Execute</button>
+			<button type='submit' name='customQuery' style="margin-left: 85px;">Execute</button>
 			</div>
 
 			<div class = "answer">
 			<?php
+			error_reporting(E_ERROR);
 			if(isset($_POST["customQuery"])){
 				$result = $mysqli->query($_POST["query"]);
 				if (!$result) {
@@ -101,7 +102,7 @@
 			</select>
 		  </div>
 		  <div class='field form-actions'>
-		    <button type='submit' name='dropExecute' style="margin-top: 15px;">Execute</button>
+		    <button type='submit' name='dropExecute' style="margin-top: 13px; margin-left: 85px;">Execute</button>
 		  </div>
 
 			<?php
@@ -149,7 +150,8 @@
 				}
 				echo "</select>"
 				?>
-			<button type="submit" name="addEntry" id="addEntryID">Add</button>
+				<br>
+			<button type="submit" name="addEntry" id="addEntryID" style="padding-right: 56px;">Add</button>
 			<button type="submit" name="updateEntry" id="updateEntryID" onclick="document.getElementById('selectDB').style.display='block';document.getElementById('executeQuery').style.display='block';">Update</button>
 			<button type="submit" name="deleteEntry" id="deleteEntryID" onclick="document.getElementById('selectDB').style.display='block';document.getElementById('executeQuery').style.display='block';">Delete</button>
 			<button type="submit" name="searchEntry" id="searchEntryID" onclick="document.getElementById('selectDB').style.display='block';document.getElementById('executeQuery').style.display='block';">Search</button>
@@ -258,7 +260,7 @@
 
 			?>
 			
-			<button type="submit" name="execute">Execute</button>
+			<button type="submit" name="execute" style="margin-left: 85px; margin-top: 13px;">Execute</button>
 			</form>
 			<?php
 
